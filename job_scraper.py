@@ -1,4 +1,6 @@
+from email import header
 import urllib
+from urllib import request
 import requests
 from bs4 import BeautifulSoup
 import selenium
@@ -34,7 +36,10 @@ def save_jobs_to_excel(jobs_list, filename):
 def load_indeed_jobs_div(job_title, location):
     getVars = {'q': job_title, 'l': location, 'fromage' : 'last', 'sort' : 'date'}
     url = ('https://www.indeed.com/jobs?' + urllib.parse.urlencode(getVars))
-    page = requests.get(url)
+    headers = {'User-Agent': 'Mozilla/5.0 (X11; Fedora; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0'}
+    x = requests.get(url, headers=headers)
+    print(x.status_code)
+    page = requests.get(url, headers=headers)
     soup = BeautifulSoup(page.content, "html.parser")
     job_soup = soup.find(id="resultsCol")
     return job_soup
